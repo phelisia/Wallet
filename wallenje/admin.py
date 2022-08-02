@@ -1,4 +1,4 @@
-from re import A
+
 from django.contrib import admin
 from .models import Customer,Wallet,Currency,Transaction,Card,ThirdParty ,Receipts,Loan,Reward,Notifications
 # Register your models here.
