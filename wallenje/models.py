@@ -32,7 +32,7 @@ class Wallet(models.Model):
     amount=models.IntegerField()
     date=models.DateTimeField(default=timezone.now)
     status=models.CharField(max_length=20,null=True)
-    pin=models.TextField(max_length=6,null=True)
+    pin=models.CharField(max_length=6,null=True)
 
 class Account(models.Model):
     account_number=models.IntegerField(default=0)
@@ -52,7 +52,7 @@ class Transaction(models.Model):
     transaction_type=models.CharField(max_length=10, choices=TRANSACTION_CHOICES,null=True)
     transaction_charge=models.IntegerField()
     transaction_date=models.DateTimeField(default=timezone.now)
-    receipt=models.ForeignKey('Receipts',on_delete=models.CASCADE, related_name='Transaction_receipt')
+    # receipt=models.ForeignKey('Receipts',on_delete=models.CASCADE, related_name='Transaction_receipt')
     original_account=models.ForeignKey('Account', on_delete=models.CASCADE, related_name='Transaction_original_account')
     destination_account=models.ForeignKey('Account', on_delete=models.CASCADE, related_name='Transaction_destination_account')
 
@@ -97,9 +97,9 @@ class Notifications(models.Model):
 class Receipts(models.Model):
     receipt_type=models.CharField(max_length=25, null=True)
     receipt_date=models.DateTimeField(default=timezone.now)
-    recipt_number=models.CharField(max_length=25, null=True)
+    recipt_number=models.CharField(max_length=200, null=True)
     account=models.ForeignKey('Account', on_delete=models.CASCADE, related_name ='Receipts_account')
-    total_Amount=models.IntegerField(default=0)
+    total_Amount=models.IntegerField()
     transaction=models.ForeignKey('Transaction', on_delete=models.CASCADE, related_name ='Receipts_transaction')
     recipt_File=models.FileField(upload_to='wallet/')
     
