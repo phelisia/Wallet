@@ -3,6 +3,7 @@ from django.db import models
 from django.forms import DateTimeField
 from django.utils import timezone
 
+
 # Create your models here.cxx
 class Customer(models.Model):
     first_name=models.CharField(max_length=20,null=True)

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table>
+        <th>
+        <td>account</td>
+        <td> name</td>
+        <td> thirdparty_id</td>
+        <td> phone_Number</td>
+        <td>currency</td>
+      
+        </th>
+         {%for third in thirdpartys%}
+         <tr>
+        <td> {{third.account}}</td>
+        <td> {{third.name}}</td>
+        <td> {{third..phonenumber}}</td>
+        <td> {{third.currency}}</td>
+
+    </tr>
+    {% endfor %}
+    
+   
+</body>
+</html>

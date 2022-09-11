@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table>
+        <th>
+        <td>transaction_ref</td>
+        <td>wallet</td>
+        <td>transaction_amount</td>
+        <td>transaction_amount</td>
+        <td>transaction_charge</td>
+        <td>transaction_type</td>
+        </th>
+         {%for transact in transactions%}
+         <tr>
+        <td> {{transact.transaction_ref}}</td>
+        <td> {{transact.wallet}}</td>
+        <td> {{transact.amount}}</td>
+        <td> {{transact.transaction_type}}</td>
+        <td> {{transact.transaction_amount}}</td>
+        <td> {{transact.transaction_charge}}</td>
+       
+    </tr>
+    {% endfor %}
+    
+   
+</body>
+</html>

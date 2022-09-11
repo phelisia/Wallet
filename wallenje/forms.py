@@ -1,4 +1,3 @@
-from pyexpat import model
 from django import forms
 from  .models import Customer,Currency,Card,Wallet,ThirdParty,Transaction,Receipts,Reward,Account,Notifications,Loan
 
