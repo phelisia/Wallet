@@ -1,5 +1,55 @@
-<h2>Account registration</h2>
-<form method="post" >{% csrf_token %}
-{{form.as_p}}
-<button type="submit" class="save btn btn-default">Save</button>
+{% load crispy_forms_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+<body>
+<h2>Card registration</h2>
+    <form method="post" novalidate class="form">
+      <div class="overlay overlay-a"></div>
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-5">
+            {{ form.date_Issued|as_crispy_field }}
+          </div>
+          <div class="col-5">
+            {{ form.card_name|as_crispy_field }}
+          </div>
+
+          <div class="col-5">
+            {{ form.card_number|as_crispy_field }}
+          </div>
+          <div class="col-5">
+            {{ form.card_type|as_crispy_field }}
+          </div>
+          <div class="col-5">
+            {{ form.expiry_date|as_crispy_field }}
+          </div>
+          <div class="col-5">
+            {{ form.card_status|as_crispy_field }}
+          </div>
+          <div class="col-5">
+            {{ form.cvv_security|as_crispy_field }}
+          </div>
+          <div class="col-5">
+            {{ form.wallet|as_crispy_field }}
+          </div>
+          <div class="col-5">
+            {{ form.account|as_crispy_field }}
+          </div>
+        
+        </div>
+
+      </form>
+      <button type="submit" class="btn btn-success">Save person</button>
+
 </form>
+</body>
+</html>
