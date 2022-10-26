@@ -64,8 +64,8 @@ admin.site.register(Notifications,NotificationsAdmin)
 
 
 class AccountAdmin(admin.ModelAdmin):
-    list_display=('account_number','account_type','balance','name','wallet',)
-    search_fields=('account_number','name',)
+    list_display=('account_number','account_type','balance','wallet','customer',)
+    search_fields=('account_number','customer',)
 admin.site.register(Account,AccountAdmin)
  
 

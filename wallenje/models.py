@@ -5,6 +5,10 @@ from django.utils import timezone
 
 
 # Create your models here.cxx
+
+loan_balance=0
+
+
 class Customer(models.Model):
     first_name=models.CharField(max_length=20,null=True)
     last_name=models.CharField(max_length=20,null=True)
@@ -48,14 +52,14 @@ class Wallet(models.Model):
 class Account(models.Model):
     account_number=models.IntegerField(default=0)
     account_type=models.CharField(max_length=20,null=True)
+    customer=models.ForeignKey('Customer', on_delete=models.CASCADE, related_name ='Account_customer')
     balance=models.IntegerField()
-    name=models.CharField(max_length=20,null=True)
     wallet=models.ForeignKey('Wallet',on_delete=models.CASCADE, related_name ='Account_wallet')
     
     def __str__(self):
-        return'{}{}'.format(self.balance,self.account_number,self.account_type,self.wallet,self.name)
+        return'{}{}'.format(self.balance,self.account_number,self.account_type,self.wallet,self.customer)
 
-
+# DEPOSITING MONEY
 
     def deposit(self, amount):
        if amount <= 0:
@@ -68,6 +72,66 @@ class Account(models.Model):
            status = 200
        return message, status
 
+
+# WITHDRAWING MONEY
+    def withdraw(self, amount):
+       if amount <= 0:
+           message =  "Invalid amount"
+           status = 403
+       else:
+           self.balance -= amount
+           self.save()
+           message = f"You have withdrawn {amount}, your new balance is {self.balance}"
+           status = 200
+       return message, status  
+
+
+# REQUESTING LOAN
+
+    def loan_request(self,amount):
+        if amount <= 0:
+            message =  "Invalid amount"
+            status = 403
+        else:
+            self.loan_balance += amount
+            self.balance += amount
+            self.save()            
+            message = f"Hello {self.customer}, You have requested for loan of  Ksh.{amount}, your new balance is {self.balance}"
+            status = 200
+        return message, status
+
+# loan repayment
+
+    def loan_repayment(self,amount):
+        if amount <= 0:
+            message =  "Invalid amount"
+            status = 403
+        else:
+            self.balance -= self.loan_balance
+            self.save()            
+            message = f"Hello {self.customer}, Your  loan of  Ksh.{self.loan_balance} has been repayed, your new balance is {self.balance}"
+            status = 200
+        return message, status
+    
+
+
+
+#   buy airtime  
+
+    def buy_airtime(self,amount):
+        if amount< 0:
+            message="Invalid amount"
+            status=403
+        else:
+            self.balance += amount
+            self.save()
+            message=f" Hello {self.customer}, You have bought airtime for Ksh.{amount}, your new balance is {self.balance}  "
+            status=200
+        return message, status
+
+
+
+# TRANSFERING MONEY
 
     def transfer(self, destination, amount):
        if amount <= 0:
