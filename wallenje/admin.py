@@ -9,6 +9,7 @@ class CustomerAdmin(admin.ModelAdmin):
 admin.site.register(Customer,CustomerAdmin)
 
 
+
 class ReceiptsAdmin(admin.ModelAdmin):
     list_display=('receipt_type','receipt_date','recipt_number','account','total_Amount','transaction','recipt_File',)
     search_fields=('recipt_File','recipt_number',)   

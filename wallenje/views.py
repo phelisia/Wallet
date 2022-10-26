@@ -1,6 +1,6 @@
 
 from django.shortcuts import render,redirect
-
+from rest_framework import views
 from .models import Account, Card, Customer, Notifications, Reward ,Wallet,Currency,Transaction,Receipts,Loan,ThirdParty
 from .forms import CustomerRegistrationForm, CurrencyRegistrationForm,CardRegistrationForm,ThirdpartyRegistrationForm,TransactionRegistrationForm,LoanRegistrationForm,RecieptRegistrationForm,RewardRegistrationForm,WalletRegistrationForm,AccountRegistrationForm,NotificationRegistrationForm
 
@@ -231,3 +231,9 @@ def edit_account(request,id):
    else:
             form = AccountRegistrationForm(instance=account)
    return render(request, "wallet/edit_account.html", {'form':form})         
+
+
+
+
+
+ 

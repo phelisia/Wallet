@@ -1,6 +1,8 @@
 from django.db import router
 from django.urls import path,include
 from rest_framework import routers
+
+from wallenje.views import AccountDepositView
 from  .views import AccountViewSet, CardViewSet, CustomerViewSet, LoanViewSet, NotificationViewSet, ReceiptsViewSet, TransactionViewSet, WalletViewSet
 
 router=routers.DefaultRouter()
@@ -14,4 +16,5 @@ router.register('loan',LoanViewSet)
 router.register('receipt',ReceiptsViewSet)
 urlpatterns=[
 path('',include(router.urls)),
+path("deposit/", AccountDepositView.as_view(), name="deposit-view"),
 ]

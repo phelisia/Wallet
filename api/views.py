@@ -1,7 +1,11 @@
+from django import views
 from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework.response import Response
+from django.core.exceptions import ObjectDoesNotExist
 from wallenje .models import Account, Card, Customer, Loan, Notifications, Receipts, Transaction,Wallet
 from .serializers import AccountSerilaizers, CardSerilaizers, CustomerSerilaizers, LoanSerilaizers, NotificationsSerilaizers, ReceiptSerilaizers, TransactionSerilaizers, WalletSerilaizers
+
 
 # Create your views here.
 
@@ -47,4 +51,30 @@ class LoanViewSet(viewsets.ModelViewSet):
 
 class NotificationViewSet(viewsets.ModelViewSet):
     queryset=Notifications.objects.all()
-    serializer_class= NotificationsSerilaizers                        
+    serializer_class= NotificationsSerilaizers       
+
+
+
+
+
+class AccountDepositView(views.APIView):
+   """
+   This class allows deposit of funds to an account.
+   Accepts this JSON data
+   {
+       "account_id": 123,
+       "amount": 1000
+   }
+   This API needs Authentication and Permissions to be added
+   """
+   def post(self, request, format=None):       
+       account_id = request.data["account_id"]
+       amount = request.data["amount"]
+       try:
+           account = Account.objects.get(id=account_id)
+       except ObjectDoesNotExist:
+           return Response("Account Not Found", status=404)
+      
+       message, status = account.deposit(amount)
+       return Response(message, status=status)    
+                
