@@ -20,14 +20,17 @@ class Customer(models.Model):
     date_created = models.DateTimeField(default=timezone.now)
     nationality=models.CharField(max_length=20,null=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/',null=True)
-    def __str__(self) -> str:
-        return self.first_name
+    
+    def __str__(self):
+        return '{} by {}'.format(self.first_name, self.last_name,self.address,self.email,self.phonenumber,self.gender,self.age,self.profile_picture,self.date_created)
+
     
 class Currency(models.Model):
     amount=models.IntegerField()
     country_of_origin=models.CharField(max_length=24,null=True) 
-    def __str__(self) -> str:
-        return self.country_of_origin
+
+    def __str__(self):
+        return '{} {}'.format(self.country_of_origin,  self.amount)
 
 
 class Wallet(models.Model):
@@ -38,8 +41,9 @@ class Wallet(models.Model):
     date=models.DateTimeField(default=timezone.now)
     status=models.CharField(max_length=20,null=True)
     pin=models.CharField(max_length=6,null=True)
-    def __str__(self) -> str:
-        return  str (self.customer)
+
+    def __str__(self):
+        return '{} {}'.format(self.balance,self.currency,self.customer,self.status)
 
 class Account(models.Model):
     account_number=models.IntegerField(default=0)
@@ -48,8 +52,8 @@ class Account(models.Model):
     name=models.CharField(max_length=20,null=True)
     wallet=models.ForeignKey('Wallet',on_delete=models.CASCADE, related_name ='Account_wallet')
     
-    def __str__(self) -> str:
-        return  str (self.name)
+    def __str__(self):
+        return'{}{}'.format(self.balance,self.account_number,self.account_type,self.wallet,self.name)
 
 
 
@@ -63,6 +67,27 @@ class Account(models.Model):
            message = f"You have deposited {amount}, your new balance is {self.balance}"
            status = 200
        return message, status
+
+
+    def transfer(self, destination, amount):
+       if amount <= 0:
+           message =  "Invalid amount"
+           status = 403
+      
+       elif amount < self.balance:
+           message =  "Insufficient balance"
+           status = 403
+      
+       else:
+           self.balance -= amount
+           self.save()
+           destination.deposit(amount)
+          
+           message = f"You have transfered {amount}, your new balance is {self.balance}"
+           status = 200
+       return message, status
+
+  
 
     
 
@@ -83,30 +108,8 @@ class Transaction(models.Model):
     original_account=models.ForeignKey('Account', on_delete=models.CASCADE, related_name='Transaction_original_account')
     destination_account=models.ForeignKey('Account', on_delete=models.CASCADE, related_name='Transaction_destination_account')
 
-    def __str__(self) -> str:
-        return  str (self.transaction_ref)
-
-
-
-    def transfer(self, destination, amount):
-       if amount <= 0:
-           message =  "Invalid amount"
-           status = 403
-      
-       elif amount < self.account_balance:
-           message =  "Insufficient balance"
-           status = 403
-      
-       else:
-           self.account_balance -= amount
-           self.save()
-           destination.deposit(amount)
-          
-           message = f"You have transfered {amount}, your new balance is {self.account_balance}"
-           status = 200
-       return message, status    
-
-
+    def __str__(self):
+        return '{}{}'.format(self.transaction_type, self.destination_account,self.original_account,self.transaction_amount,self.transaction_amount)
 
 
 class Card(models.Model):
@@ -129,8 +132,10 @@ class Card(models.Model):
     wallet=models.ForeignKey('Wallet', on_delete=models.CASCADE, related_name ='Card_wallet')
     account=models.ForeignKey('Account', on_delete=models.CASCADE, related_name ='Card_account')  
 
-    def __str__(self) -> str:
-        return  str (self.card_name)
+    def __str__(self):
+        return '{} {}'.format(self.card_number,self.card_type,self.expiry_date,self.wallet,self.account,self.card_name, self.card_type)
+
+
 
 
      
@@ -143,9 +148,9 @@ class ThirdParty(models.Model):
     phone_Number=models.IntegerField()
     currency=models.ForeignKey('Currency', on_delete=models.CASCADE, related_name ='ThirdParty_currency')
 
-    def __str__(self) -> str:
-        return  str (self.name)
-    
+    def __str__(self):
+        return'{} {}'.format(self.account, self.name,self.thirdparty_id,self.currency,self.phone_Number)
+
 class Notifications(models.Model):
  notification_Id=models.CharField(max_length=25,null=True)
  STATUS_CHOICES = (
@@ -156,8 +161,8 @@ class Notifications(models.Model):
  date=models.DateTimeField(default=timezone.now)
  recipient=models.ForeignKey('Customer', on_delete=models.CASCADE, related_name ='Notifications_recipient')  
 
- def __str__(self) -> str:
-        return  str (self.recipient)
+ def __str__(self) :
+        return '{} {}'.format(self.date, self.recipient,self.status)
 
  
 
@@ -170,8 +175,8 @@ class Receipts(models.Model):
     transaction=models.ForeignKey('Transaction', on_delete=models.CASCADE, related_name ='Receipts_transaction')
     recipt_File=models.FileField(upload_to='wallet/')
 
-    def __str__(self) -> str:
-        return  str (self.account)
+    def __str__(self) :
+        return  '{} {}'.format(self.recipt_File,self.total_Amount,self.transaction,self.receipt_type)
 
     
 class Loan(models.Model):
@@ -186,8 +191,9 @@ class Loan(models.Model):
  loan_balance=models.IntegerField()
  loan_term=models.IntegerField()
      
-def __str__(self) -> str:
-        return  str (self.guaranter)
+ def __str__(self):
+        return '{}{}'.format(self.loan_balance,self.loan_type,self.amount,self.guaranter,self.wallet)
+
  
  
  
@@ -203,8 +209,9 @@ class Reward(models.Model):
  gender = models.CharField(max_length=1, choices=GENDER_CHOICES,null=True)  
  bonus=models.CharField(max_length=25, null=True)
 
- def __str__(self) -> str:
-        return  str (self.customer)
+ def __str__(self):
+        return '{}{}'.format(self.transaction,self.date,self.customer,self.bonus)
+
 
  
 
